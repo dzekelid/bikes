@@ -8,8 +8,8 @@ image: http://kinlane-productions.s3.amazonaws.com/api-evangelist-site/company/l
 x-kinRank: "7"
 x-alexaRank: "1035226"
 tags: Bikes
-created: "2018-08-25"
-modified: "2018-08-25"
+created: "2018-08-27"
+modified: "2018-08-27"
 url: https://raw.githubusercontent.com/streamdata-gallery-topics/bikes/master/_listings/coord/apis.md
 specificationVersion: "0.14"
 apis:
@@ -707,6 +707,353 @@ apis:
     url: https://raw.githubusercontent.com/streamdata-gallery-topics/bikes/master/_listings/coord/systemsystem-id-get-postman.md
   - type: x-openapi-spec
     url: https://raw.githubusercontent.com/streamdata-gallery-topics/bikes/master/_listings/coord/systemsystem-id-get-openapi.md
+- name: Bike Share API - Get detailed information on a bike system, as a GeoJSON feature.
+  x-api-slug: systemsystem-id-get
+  description: |-
+    Bike systems are individual bike share systems, often per-region.
+
+    Information is returned as a GeoJSON Feature. The geometry of the GeoJSON Feature is
+    a MultiPolygon that defines the system's operational area. All bike systems have an
+    operational area, in which bikes may be found and parked.
+    For systems that require bikes be docked, this area is somewhat arbitrary, as bikes are
+    only found at stations. In this case, the operational area is roughly the city or
+    jurisdiction that the system covers.
+    For semi-dockless and dockless systems that allow bikes to be parked anywhere, the
+    operational area is very important and strictly defined. Often there are extra fees for
+    parking outside of the operational area (also known as a "catchment area"), and almost all
+    bikes should be within the area.
+
+    These bike system types are reflected in the `station_type` property.
+    * `dock` - All bikes must be taken from and returned to a dock.
+    * `dockless` - All bikes are only dockless.
+    * `dockless_with_hub` - Bikes may be dockless, or taken from or returned to a hub.
+    A hub can be an area rather than a discrete station, where a bike can be returned and
+    locked but not explicitly docked. The total price of a rental may change based on whether
+    a bike is returned to a hub or not.
+
+    Areas are returned as a GeoJSON MultiPolygon since areas may be discontiguous or have
+    holes.
+
+    ### Example
+
+    #### Request:
+    `curl -G "https://api.coord.co/v1/bike/system/CitiBike?access_key="`
+
+    #### Response:
+    ```
+    {
+      "type": "Feature",
+      "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [ [-74.00, 40.70], [-74.00, 40.80], [-73.90, 40.80], ..., [-74.00, 40.70] ]
+            ],
+            ...,
+            [
+              [ [-73.00, 41.70], [-73.00, 41.80], [-72.90, 41.80], ..., [-73.00, 41.70] ],
+              [ [-72.98, 41.75], [-72.98, 41.78], [-72.95, 41.78], ..., [-72.98, 41.75] ]
+            ]
+          ]
+        },
+      "id": "CitiBike",
+      "properties": {
+        "email": "support@coord.co",
+        "phone_number": "+6789998212",
+        "station_type": "dock",
+        "is_transactable": "false"
+      }
+    }
+    ```
+  image: http://kinlane-productions.s3.amazonaws.com/api-evangelist-site/company/logos/coord-logo.png
+  humanURL: https://coord.co
+  baseURL: https://api.coord.co//v1/bike
+  tags: Parking, Tolls, Bikes, Routes, General Data, Relative Data, Service API
+  properties:
+  - type: x-postman-collection
+    url: https://raw.githubusercontent.com/streamdata-gallery-topics/bikes/master/_listings/coord/systemsystem-id-get-postman.md
+  - type: x-openapi-spec
+    url: https://raw.githubusercontent.com/streamdata-gallery-topics/bikes/master/_listings/coord/systemsystem-id-get-openapi.md
+- name: Bike Share API - Get information on all bike systems in an area, as a GeoJSON
+    FeatureCollection.
+  x-api-slug: system-get
+  description: |-
+    Bike systems are individual bike share systems, often per-region.
+
+    Information about each system is returned as a GeoJSON Feature, within a single GeoJSON
+    FeatureCollection.
+
+    See the [/system/{system_id}](#reference/0/get-information-for-a-bike-system) call for more
+    details on the individual system Features.
+
+    ### Example
+
+    #### Request:
+    `curl -G "https://api.coord.co/v1/bike/system?latitude=40.74286877312112&longitude=-73.98918628692627&radius_km=0.5&access_key="`
+
+    #### Response:
+    ```
+    {
+      "features": [
+        {
+          "geometry": {
+            "coordinates": [
+              [
+                [
+                  [
+                    -74.055701,
+                    40.707838
+                  ],
+                  [
+                    -74.083639,
+                    40.714807
+                  ],
+                  ...,
+                  [
+                    -74.055701,
+                    40.707838
+                  ]
+                ]
+              ]
+            ],
+            "type": "MultiPolygon"
+          },
+          "id": "CitiBike",
+          "properties": {
+            "is_transactable": true,
+            "station_type": "dock"
+          },
+          "type": "Feature"
+        }
+      ],
+      "type": "FeatureCollection"
+    }
+    ```
+  image: http://kinlane-productions.s3.amazonaws.com/api-evangelist-site/company/logos/coord-logo.png
+  humanURL: https://coord.co
+  baseURL: https://api.coord.co//v1/bike
+  tags: Parking, Tolls, Bikes, Routes, General Data, Relative Data, Service API
+  properties:
+  - type: x-postman-collection
+    url: https://raw.githubusercontent.com/streamdata-gallery-topics/bikes/master/_listings/coord/system-get-postman.md
+  - type: x-openapi-spec
+    url: https://raw.githubusercontent.com/streamdata-gallery-topics/bikes/master/_listings/coord/system-get-openapi.md
+- name: Bike Share API - Get the cost of renting a bike.
+  x-api-slug: quote-get
+  description: |-
+    Provide price quotes for renting a bike. There can be multiple quotes per system, reflecting
+    different options for buying membership such as single-ride, single-day, and multi-day
+    passes. Please keep in mind that quotes are estimates.
+
+    ### Example
+
+    #### Request:
+    `curl -G "https://api.coord.co/v1/bike/quote?access_key="`
+
+    #### Response:
+    ```
+    [
+      {
+        "cost": {
+          "amount": 108,
+          "currency": "USD"
+        },
+        "id": 2,
+        "max_days": 1,
+        "system_id": "CitiBike",
+        "tax_regions": [{
+          "name": "New York City",
+          "tax_rate": 0.08875
+        }, {
+          "name": "Jersey City",
+          "tax_rate": 0.07
+        }],
+        "usage_fees": [
+          {
+            "cost": {
+              "amount": 200,
+              "currency": "USD"
+            },
+            "id": 1,
+            "pass_type_id": 2,
+            "prorated": false,
+            "start_time_seconds": 1800
+          },
+          {
+            "cost": 1.5,
+            "fee_increment_seconds": 900,
+            "prorated": false,
+            "start_time_seconds": 3600
+          }
+        ]
+      },
+      {
+        "cost": {
+          "amount": 272,
+          "currency": "USD"
+        },
+        "id": 3,
+        "max_days": 3,
+        "system_id": "CitiBike",
+        "tax_regions": [{
+          "name": "New York City",
+          "tax_rate": 0.08875
+        }, {
+          "name": "Jersey City",
+          "tax_rate": 0.07
+        }],
+        "usage_fees": [
+          {
+            "cost": {
+              "amount": 100,
+              "currency": "USD"
+            },
+            "fee_increment_seconds": 900,
+            "prorated": false,
+            "start_time_seconds": 1800
+          }
+        ]
+      }
+    ]
+    ```
+  image: http://kinlane-productions.s3.amazonaws.com/api-evangelist-site/company/logos/coord-logo.png
+  humanURL: https://coord.co
+  baseURL: https://api.coord.co//v1/bike
+  tags: Parking, Tolls, Bikes, Routes, General Data, Relative Data, Service API
+  properties:
+  - type: x-postman-collection
+    url: https://raw.githubusercontent.com/streamdata-gallery-topics/bikes/master/_listings/coord/quote-get-postman.md
+  - type: x-openapi-spec
+    url: https://raw.githubusercontent.com/streamdata-gallery-topics/bikes/master/_listings/coord/quote-get-openapi.md
+- name: Bike Share API - Get detailed information on a bike location, as a GeoJSON
+    Feature.
+  x-api-slug: locationsystem-idlocation-id-get
+  description: |-
+    A bike location may be a single bike station (which can have multiple docked bikes) or a
+    single dockless bike itself. All working docks are returned, but only free and rentable
+    dockless bikes are returned.
+
+    ### Example
+
+    #### Request:
+    `curl -G "https://api.coord.co/v1/bike/location/CitiBike/482?access_key="`
+
+    #### Response:
+    ```
+    {
+      "geometry": {
+        "coordinates": [
+          -73.99931783,
+          40.73935542
+        ],
+        "type": "Point"
+      },
+      "id": "CitiBike-482",
+      "properties": {
+        "is_renting": true,
+        "is_returning": true,
+        "last_reported": "2018-05-17T15:41:06.000Z",
+        "lat": 40.73935542,
+        "location_id": "482",
+        "location_type": "bike_station_dock",
+        "lon": -73.99931783,
+        "name": "W 15 St & 7 Ave",
+        "num_bikes_available": 19,
+        "num_docks_available": 19,
+        "region_id": "71",
+        "system_id": "CitiBike"
+      },
+      "type": "Feature"
+    }
+    ```
+  image: http://kinlane-productions.s3.amazonaws.com/api-evangelist-site/company/logos/coord-logo.png
+  humanURL: https://coord.co
+  baseURL: https://api.coord.co//v1/bike
+  tags: Parking, Tolls, Bikes, Routes, General Data, Relative Data, Service API
+  properties:
+  - type: x-postman-collection
+    url: https://raw.githubusercontent.com/streamdata-gallery-topics/bikes/master/_listings/coord/locationsystem-idlocation-id-get-postman.md
+  - type: x-openapi-spec
+    url: https://raw.githubusercontent.com/streamdata-gallery-topics/bikes/master/_listings/coord/locationsystem-idlocation-id-get-openapi.md
+- name: Bike Share API - Get bike locations in the requested search area, as a GeoJSON
+    FeatureCollection.
+  x-api-slug: location-get
+  description: |-
+    Get a list of locations given the input parameters. Specify a search area by radius around
+    a latitude and longitude, as well as any filter for specific systems. Each location will
+    be a GeoJSON Feature, and aggregated into a GeoJSON FeatureCollection.
+
+    ### Example
+
+    #### Request:
+    `curl -G "https://api.coord.co/v1/bike/location?latitude=40.742868&longitude=-73.989186&radius_km=0.25&access_key="`
+
+    #### Response:
+    ```
+    {
+      "features": [
+        {
+          "geometry": {
+            "coordinates": [
+              -73.98918628692627,
+              40.74286877312112
+            ],
+            "type": "Point"
+          },
+          "id": "CitiBike-3641",
+          "properties": {
+            "is_renting": true,
+            "is_returning": true,
+            "last_reported": "2018-05-17T15:39:24.000Z",
+            "lat": 40.74286877312112,
+            "location_id": "3641",
+            "location_type": "bike_station_dock",
+            "lon": -73.98918628692627,
+            "name": "Broadway & W 25 St",
+            "num_bikes_available": 53,
+            "num_docks_available": 1,
+            "region_id": "71",
+            "system_id": "CitiBike"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -73.99144871,
+              40.74395411
+            ],
+            "type": "Point"
+          },
+          "id": "CitiBike-466",
+          "properties": {
+            "is_renting": true,
+            "is_returning": true,
+            "last_reported": "2018-05-17T15:32:40.000Z",
+            "lat": 40.74395411,
+            "location_id": "466",
+            "location_type": "bike_station_dock",
+            "lon": -73.99144871,
+            "name": "W 25 St & 6 Ave",
+            "num_bikes_available": 35,
+            "region_id": "71",
+            "system_id": "CitiBike"
+          },
+          "type": "Feature"
+        }
+      ],
+      "type": "FeatureCollection"
+    }
+    ```
+  image: http://kinlane-productions.s3.amazonaws.com/api-evangelist-site/company/logos/coord-logo.png
+  humanURL: https://coord.co
+  baseURL: https://api.coord.co//v1/bike
+  tags: Parking, Tolls, Bikes, Routes, General Data, Relative Data, Service API
+  properties:
+  - type: x-postman-collection
+    url: https://raw.githubusercontent.com/streamdata-gallery-topics/bikes/master/_listings/coord/location-get-postman.md
+  - type: x-openapi-spec
+    url: https://raw.githubusercontent.com/streamdata-gallery-topics/bikes/master/_listings/coord/location-get-openapi.md
 x-common:
 - type: x-blog
   url: https://medium.com/coord

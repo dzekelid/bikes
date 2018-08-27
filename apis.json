@@ -1,0 +1,90 @@
+{
+	"name": "Streadata.io API Gallery - Bikes",
+	"description": "This is a repository of bikes APIs, self-contained as a Github repository, with HTML and YAML representations of the APIs and their surrounding operations.",
+	"image": "http://template.streamdata.gallery/assets/bikes.png",
+	"created": "2018-02-24",
+	"modified": "2018-08-27",
+	"url": "http://bikes.streamdata.gallery/apis.json",
+	"specificationVersion": "0.14",
+	"apis": [
+		{
+			"name": "CycleStreets",
+			"x-api-slug": "cyclestreets",
+			"description": "UK-wide cycle journey planner system, which lets you plan routes from A to B by bike. It is designed by cyclists, for cyclists, and caters for the needs of both confident and less confident cyclists.",
+			"image": "http://kinlane-productions.s3.amazonaws.com/screen-capture-api/390-cyclestreets.jpg",
+			"humanURL": "http://www.cyclestreets.net",
+			"baseURL": "https:///",
+			"tags": "Bikes",
+			"properties": [
+				{
+					"type": "x-openapi-spec",
+					"url": "https://raw.githubusercontent.com/streamdata-gallery-topics/bikes/master/_listings/cyclestreets/openapi.md"
+				}
+			]
+		},
+		{
+			"name": "JCDecaux Self-Service Bicycles",
+			"x-api-slug": "jcdecaux-selfservice-bicycles",
+			"description": "JCDecaux, #1 worldwide in outdoor advertising, reaches more than 400 million people on the planet every day.",
+			"image": "http://kinlane-productions.s3.amazonaws.com/screen-capture-api/28266-developer-jcdecaux-com.jpg",
+			"humanURL": "https://jcdecaux.com",
+			"baseURL": "https:///",
+			"tags": "Bikes",
+			"properties": [
+				{
+					"type": "x-openapi-spec",
+					"url": "https://raw.githubusercontent.com/streamdata-gallery-topics/bikes/master/_listings/jcdecaux-selfservice-bicycles/openapi.md"
+				}
+			]
+		},
+		{
+			"name": "Transport for London Unified",
+			"x-api-slug": "transport-for-london-unified",
+			"description": "We are the integrated transport authority responsible for delivering Mayor of London Sadiq Khans strategy and commitments on transport. We run the day-to-day operation of the Capitals public transport network and manage Londons main roads.",
+			"image": "http://kinlane-productions.s3.amazonaws.com/api-evangelist-site/company/logos/transport-for-london-unified-api.png",
+			"humanURL": "https://tfl.gov.uk/",
+			"baseURL": "https://api.tfl.gov.uk//",
+			"tags": "Bikes",
+			"properties": [
+				{
+					"type": "x-openapi-spec",
+					"url": "https://raw.githubusercontent.com/streamdata-gallery-topics/bikes/master/_listings/transport-for-london-unified/openapi.md"
+				}
+			]
+		},
+		{
+			"name": "Coord",
+			"x-api-slug": "coord",
+			"description": "Coord is a mobility company that creates seamless mobility and self-driving experiences today through deep integrations. The company offers bike-share API, Curbs API, Tolls API, Routing API and etc.",
+			"image": "http://kinlane-productions.s3.amazonaws.com/api-evangelist-site/company/logos/coord-logo.png",
+			"humanURL": "https://coord.co",
+			"baseURL": "https://api.coord.co//v1/users",
+			"tags": "Bikes",
+			"properties": [
+				{
+					"type": "x-openapi-spec",
+					"url": "https://raw.githubusercontent.com/streamdata-gallery-topics/bikes/master/_listings/coord/openapi.md"
+				}
+			]
+		}
+	],
+	"tags": "Bikes",
+	"include": [
+		{
+			"name": "CycleStreets",
+			"url": "https://raw.githubusercontent.com/streamdata-gallery-topics/bikes/master/_listings/cyclestreets/apis.yaml"
+		},
+		{
+			"name": "JCDecaux Self-Service Bicycles",
+			"url": "https://raw.githubusercontent.com/streamdata-gallery-topics/bikes/master/_listings/jcdecaux-selfservice-bicycles/apis.yaml"
+		},
+		{
+			"name": "Transport for London Unified",
+			"url": "https://raw.githubusercontent.com/streamdata-gallery-topics/bikes/master/_listings/transport-for-london-unified/apis.yaml"
+		},
+		{
+			"name": "Coord",
+			"url": "https://raw.githubusercontent.com/streamdata-gallery-topics/bikes/master/_listings/coord/apis.yaml"
+		}
+	]
+}
